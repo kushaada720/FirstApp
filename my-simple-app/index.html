@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Condition Checker</title>
+    <style>
+        /* Some simple styling to make it look nice */
+        body { font-family: sans-serif; display: grid; place-content: center; text-align: center; height: 100vh; margin: 0; background-color: #f0f0f0; }
+        #app { background-color: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        button { font-size: 1.2rem; padding: 0.8rem 1.5rem; border-radius: 8px; border: none; background-color: #007bff; color: white; cursor: pointer; margin-top: 1rem; }
+        #result { font-size: 1.5rem; font-weight: bold; margin-top: 1.5rem; min-height: 50px; }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <h1>Backend Condition Checker</h1>
+        <p>Click the button to check the condition on the server.</p>
+        <p id="result">Waiting for you to check...</p>
+        <button onclick="checkTheCondition()">Check Now!</button>
+    </div>
+
+    <script>
+        // This is the JavaScript for our front end
+        async function checkTheCondition() {
+            const resultElement = document.getElementById('result');
+            resultElement.textContent = '🤔 Checking...';
+
+            // --- IMPORTANT ---
+            // Paste the URL of your Netlify function here!
+            const backendUrl = 'https://your-site-name.netlify.app/.netlify/functions/checkCondition';
+
+            try {
+                // 1. "Fetch" the data from our backend URL.
+                const response = await fetch(backendUrl);
+                // 2. Convert the response into JSON format we can use.
+                const data = await response.json();
+
+                // 3. Display the message from the backend!
+                resultElement.textContent = data.message;
+
+            } catch (error) {
+                console.error('Error:', error);
+                resultElement.textContent = 'Oops! Something went wrong.';
+            }
+        }
+    </script>
+
+</body>
+</html>
